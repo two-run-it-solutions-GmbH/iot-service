@@ -1,0 +1,32 @@
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web.exposure.include: health,info
+  endpoint.health.probes.enabled: true
+
+# Şimdilik inbound JWT doğrulama gerekmiyor, ileride açarız
+# spring:
+#   security:
+#     oauth2:
+#       resourceserver:
+#         jwt:
+#           issuer-uri: ${KEYCLOAK_ISSUER_URI:https://localhost/auth/realms/master}
+
+openremote:
+  base-url: https://localhost
+  keycloak-path: /auth
+  realm: master
+  client-id: iotservice
+  client-secret: pbnXKSbELRZddPGbbnzVGJFovWzBESGQ
+
+http:
+  insecure-trust: ${HTTP_INSECURE_TRUST:true}  # dev'de self-signed sertifikayı kabul et
+
+logging:
+  level:
+    feign: DEBUG
+    org.springframework.cloud.openfeign: DEBUG
+    com.example.iot.service.client.keycloak: DEBUG
+
