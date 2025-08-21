@@ -18,11 +18,16 @@ public class TokenService {
     private final KeycloakClient keycloakClient;
     private final OpenRemoteProperties properties;
 
+    // Tek realm için cache (admin için kullanılıyor)
     private TokenResponse cachedToken;
     private Instant tokenExpiresAt;
 
     public synchronized String getToken() {
-        if (isValidToken()) {
+        return getTokenForRealm(properties.getAdminRealm()); // adminRealm getter adı doğru olsun
+    }
+
+    public synchronized String getTokenForRealm(String realm) {
+        if (isValidToken(realm)) {
             return cachedToken.accessToken();
         }
 
@@ -32,19 +37,20 @@ public class TokenService {
                 "client_secret", properties.getClientSecret()
         );
 
-        log.debug("Fetching new token from Keycloak");
-        TokenResponse newToken = keycloakClient.getToken(form);
+        log.debug("Fetching new token from Keycloak for realm={}", realm);
+        TokenResponse newToken = keycloakClient.getToken(realm, form);
 
         if (newToken == null || newToken.accessToken() == null) {
-            log.error("Failed to fetch access token from Keycloak");
-            throw new IllegalStateException("Keycloak token fetch failed");
+            log.error("Failed to fetch access token from Keycloak for realm={}", realm);
+            throw new IllegalStateException("Keycloak token fetch failed for realm=" + realm);
         }
 
         cacheToken(newToken);
         return newToken.accessToken();
     }
 
-    private boolean isValidToken() {
+    private boolean isValidToken(String realm) {
+        // İleri seviye: her realm için ayrı cache tutabilirsin (Map<realm, TokenResponse>)
         return cachedToken != null
                 && tokenExpiresAt != null
                 && Instant.now().isBefore(tokenExpiresAt.minusSeconds(60));
@@ -55,3 +61,4 @@ public class TokenService {
         this.tokenExpiresAt = Instant.now().plusSeconds(token.expiresIn());
     }
 }
+

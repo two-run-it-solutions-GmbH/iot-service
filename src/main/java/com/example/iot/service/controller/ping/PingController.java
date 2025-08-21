@@ -1,4 +1,4 @@
-package com.example.iot.service.controller;
+package com.example.iot.service.controller.ping;
 
 import com.example.iot.service.service.auth.TokenService;
 import lombok.RequiredArgsConstructor;

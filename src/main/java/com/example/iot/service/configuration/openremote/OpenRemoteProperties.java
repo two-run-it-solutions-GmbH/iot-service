@@ -10,9 +10,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "openremote")
 public class OpenRemoteProperties {
-    private String baseUrl;
-    private String keycloakPath;
-    private String realm;
+    private String apiBaseUrl;
+    private String keycloakBaseUrl;
+    private String adminRealm;   // dikkat: adminRealm
     private String clientId;
     private String clientSecret;
 }
