@@ -12,7 +12,9 @@ import org.springframework.context.annotation.Configuration;
 public class OpenRemoteProperties {
     private String apiBaseUrl;
     private String keycloakBaseUrl;
-    private String adminRealm;   // dikkat: adminRealm
-    private String clientId;
-    private String clientSecret;
+    private String adminRealm;
+    private String masterClientId;
+    private String masterClientSecret;
+    private String tenantClientId;
+    private String tenantClientSecret;
 }

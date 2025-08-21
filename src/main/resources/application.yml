@@ -2,16 +2,22 @@ server:
   port: 8080
 
 openremote:
-  api-base-url: https://localhost            # OpenRemote Manager (/api)  -> HTTP
-  keycloak-base-url: https://localhost/auth # Keycloak (/realms/.. )    -> HTTPS
-  admin-realm: master
-  client-id: iotservice
-  client-secret: pbnXKSbELRZddPGbbnzVGJFovWzBESGQ
+  api-base-url: https://localhost
+  keycloak-base-url: https://localhost/auth
+  admin-realm: kasiskafe
+  master-client-id: iotservice
+  master-client-secret: pbnXKSbELRZddPGbbnzVGJFovWzBESGQ
+  tenant-client-id: kasiskafe
+  tenant-client-secret: VuJ8x8eLN7odFmXg1xxj2HQ9wcE0pYjo
 
 http:
   insecure-trust: true
 
 logging:
   level:
+    root: INFO
     feign: DEBUG
-    org.springframework.cloud.openfeign: DEBUG
+    feign.Logger: DEBUG
+    com.example.iot.service.client.openremote: DEBUG
+    com.example.iot.service.configuration.feign: DEBUG
+

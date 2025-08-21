@@ -17,8 +17,12 @@ import java.util.Map;
 )
 public interface OpenRemoteClient {
 
-    @PostMapping(value = "/{adminRealm}/realm", consumes = MediaType.APPLICATION_JSON_VALUE)
-    String createRealm(@PathVariable("adminRealm") String adminRealm,
-                       @RequestBody CreateRealmRequest payload);
+    // Realm oluşturma: her zaman master altında
+    @PostMapping(value = "/master/realm", consumes = MediaType.APPLICATION_JSON_VALUE)
+    String createRealm(@RequestBody CreateRealmRequest payload);
 
+    // Asset oluşturma: hedef realm altında
+    @PostMapping(value = "/{realm}/asset", consumes = MediaType.APPLICATION_JSON_VALUE)
+    String createAsset(@PathVariable("realm") String realm,
+                       @RequestBody Map<String, Object> payload);
 }
